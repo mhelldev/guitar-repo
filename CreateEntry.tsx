@@ -12,7 +12,7 @@ import {
     Stack,
     Slider,
     Select,
-    CheckIcon
+    CheckIcon, Menu, HamburgerIcon, Pressable
 } from 'native-base';
 
 type FormData = {
@@ -29,6 +29,16 @@ export default function CreateEntry() {
 
   return (
       <Box alignItems="center" marginTop={5}>
+          <Box w="90%" marginLeft={4} marginY={5} alignItems="left">
+              <Menu w="190" trigger={triggerProps => {
+                  return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
+                      <HamburgerIcon />
+                  </Pressable>;
+              }}>
+                  <Menu.Item>List Songs</Menu.Item>
+                  <Menu.Item isDisabled>Create Song</Menu.Item>
+              </Menu>
+          </Box>
           <FormControl isRequired>
               <Stack mx="6">
                   <FormControl.Label>Song</FormControl.Label>
@@ -53,7 +63,7 @@ export default function CreateEntry() {
                       <Slider.Thumb />
                   </Slider>
                   <FormControl.Label>Youtube</FormControl.Label>
-                  <Input/>
+                  <Input defaultValue={"https://youtube.de/"}/>
                   <FormControl.Label>Ultimate Guitar</FormControl.Label>
                   <Input/>
                   <Button marginTop={5} onPress={() => onSubmit} >Submit</Button>
