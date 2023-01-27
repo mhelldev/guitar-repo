@@ -12,7 +12,7 @@ import {
     Stack,
     Slider,
     Select,
-    CheckIcon, Menu, HamburgerIcon, Pressable
+    CheckIcon, Menu, HamburgerIcon, Pressable, Heading
 } from 'native-base';
 
 type FormData = {
@@ -41,6 +41,7 @@ export default function CreateEntry() {
           </Box>
           <FormControl isRequired>
               <Stack mx="6">
+                  <Heading marginBottom={4}>New Song</Heading>
                   <FormControl.Label>Song</FormControl.Label>
                   <Input/>
                   <FormControl.Label>Artist</FormControl.Label>
