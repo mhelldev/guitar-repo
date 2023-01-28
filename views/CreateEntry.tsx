@@ -15,6 +15,7 @@ import {
     CheckIcon, Menu, HamburgerIcon, Pressable, Heading
 } from 'native-base';
 import {ViewProperties} from "../App";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type Style = 'Jazz' | 'Fingerpicking' | 'Blues' | 'Rock/Pop'
 
@@ -40,7 +41,7 @@ export default function CreateEntry(props: ViewProperties) {
         return song && artist && style && progress
     }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
         if (song && artist && style && progress) {
             const entry: SongEntry = {
                 song,
@@ -50,7 +51,18 @@ export default function CreateEntry(props: ViewProperties) {
                 youtube,
                 ultimateGuitar
             }
-            console.log(entry)
+            try {
+                const guitarRepoJsonString = await AsyncStorage.getItem('@guitar-repo')
+                let guitarRepo: SongEntry[] = []
+                if(guitarRepoJsonString) {
+                    guitarRepo = JSON.parse(guitarRepoJsonString)
+                }
+                guitarRepo.push(entry)
+
+                await AsyncStorage.setItem('@guitar-repo', JSON.stringify(guitarRepo))
+            } catch (e) {
+                console.log('error saving file')
+            }
         }
   };
 
@@ -70,9 +82,9 @@ export default function CreateEntry(props: ViewProperties) {
               <Stack mx="6">
                   <Heading marginBottom={4}>New Song</Heading>
                   <FormControl.Label>Song</FormControl.Label>
-                  <Input value={song} onTextInput={(event) => setSong(event?.nativeEvent?.text || '')}/>
+                  <Input value={song} onChangeText={val => setSong(val)}/>
                   <FormControl.Label>Artist</FormControl.Label>
-                  <Input value={artist} onTextInput={(event) => setArtist(event?.nativeEvent?.text || '')}/>
+                  <Input value={artist} onChangeText={val => setArtist(val)}/>
                   <FormControl.Label>Style</FormControl.Label>
                   <Select selectedValue={style} accessibilityLabel="Choose Style" placeholder="Choose Style" _selectedItem={{
                       bg: "teal.600",
@@ -91,9 +103,9 @@ export default function CreateEntry(props: ViewProperties) {
                       <Slider.Thumb />
                   </Slider>
                   <FormControl.Label isRequired={false}>Youtube</FormControl.Label>
-                  <Input value={youtube} onTextInput={(event) => setYoutube(event?.nativeEvent?.text || '')}/>
+                  <Input value={youtube} onChangeText={val => setYoutube(val)}/>
                   <FormControl.Label isRequired={false}>Ultimate Guitar</FormControl.Label>
-                  <Input value={ultimateGuitar} onTextInput={(event) => setUltimateGuitar(event?.nativeEvent?.text || '')}/>
+                  <Input value={ultimateGuitar} onChangeText={val => setUltimateGuitar(val)}/>
                   <Button isDisabled={!isSaveEnabled()}  marginTop={5} onPress={() => onSubmit()} >Submit</Button>
               </Stack>
           </FormControl>
