@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Container,
     Alert,
@@ -16,16 +16,42 @@ import {
 } from 'native-base';
 import {ViewProperties} from "../App";
 
-type FormData = {
-  name: string;
-  email: string;
-  password: string;
+export type Style = 'Jazz' | 'Fingerpicking' | 'Blues' | 'Rock/Pop'
+
+export interface SongEntry {
+    song: string
+    artist: string
+    style: Style
+    progress: number
+    youtube?: string
+    ultimateGuitar?: string
 };
 
-export default function CreateEntry(props: ViewProperties) {
 
-  const onSubmit = (data: FormData) => {
-    //Alert.alert('data', JSON.stringify(data));
+export default function CreateEntry(props: ViewProperties) {
+    const [song, setSong] = useState<string | undefined>()
+    const [artist, setArtist] = useState<string | undefined>(undefined)
+    const [style, setStyle] = useState<Style | undefined>(undefined)
+    const [progress, setProgress] = useState<number | undefined>(undefined)
+    const [youtube, setYoutube] = useState<string | undefined>(undefined)
+    const [ultimateGuitar, setUltimateGuitar] = useState<string | undefined>(undefined)
+
+    const isSaveEnabled = () => {
+        return song && artist && style && progress
+    }
+
+  const onSubmit = () => {
+        if (song && artist && style && progress) {
+            const entry: SongEntry = {
+                song,
+                artist,
+                style,
+                progress,
+                youtube,
+                ultimateGuitar
+            }
+            console.log(entry)
+        }
   };
 
   return (
@@ -44,31 +70,31 @@ export default function CreateEntry(props: ViewProperties) {
               <Stack mx="6">
                   <Heading marginBottom={4}>New Song</Heading>
                   <FormControl.Label>Song</FormControl.Label>
-                  <Input/>
+                  <Input value={song} onTextInput={(event) => setSong(event?.nativeEvent?.text || '')}/>
                   <FormControl.Label>Artist</FormControl.Label>
-                  <Input/>
+                  <Input value={artist} onTextInput={(event) => setArtist(event?.nativeEvent?.text || '')}/>
                   <FormControl.Label>Style</FormControl.Label>
-                  <Select selectedValue={'Jazz'} accessibilityLabel="Choose Style" placeholder="Choose Style" _selectedItem={{
+                  <Select selectedValue={style} accessibilityLabel="Choose Style" placeholder="Choose Style" _selectedItem={{
                       bg: "teal.600",
                       endIcon: <CheckIcon size="5" />
-                  }} mt={1} onValueChange={() => {}}>
-                      <Select.Item label="Jazz" value="ux" />
-                      <Select.Item label="Fingerpicking" value="web" />
-                      <Select.Item label="Blues" value="cross" />
-                      <Select.Item label="Rock/Pop" value="ui" />
+                  }} mt={1} onValueChange={(value) => setStyle(value as Style)}>
+                      <Select.Item label="Jazz" value="Jazz" />
+                      <Select.Item label="Fingerpicking" value="Fingerpicking" />
+                      <Select.Item label="Blues" value="Blues" />
+                      <Select.Item label="Rock/Pop" value="Rock/Pop" />
                   </Select>
-                  <FormControl.Label>Progress (70)</FormControl.Label>
-                  <Slider defaultValue={70} minValue={0} maxValue={100} accessibilityLabel="hello world" step={10}>
+                  <FormControl.Label>Progress ({progress})</FormControl.Label>
+                  <Slider value={progress}  onChange={value => setProgress(value)} minValue={0} maxValue={100} accessibilityLabel="hello world" step={10}>
                       <Slider.Track>
                           <Slider.FilledTrack />
                       </Slider.Track>
                       <Slider.Thumb />
                   </Slider>
                   <FormControl.Label isRequired={false}>Youtube</FormControl.Label>
-                  <Input defaultValue={"https://youtube.de/"}/>
+                  <Input value={youtube} onTextInput={(event) => setYoutube(event?.nativeEvent?.text || '')}/>
                   <FormControl.Label isRequired={false}>Ultimate Guitar</FormControl.Label>
-                  <Input/>
-                  <Button marginTop={5} onPress={() => onSubmit} >Submit</Button>
+                  <Input value={ultimateGuitar} onTextInput={(event) => setUltimateGuitar(event?.nativeEvent?.text || '')}/>
+                  <Button isDisabled={!isSaveEnabled()}  marginTop={5} onPress={() => onSubmit()} >Submit</Button>
               </Stack>
           </FormControl>
       </Box>
