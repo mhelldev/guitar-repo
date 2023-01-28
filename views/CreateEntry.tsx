@@ -56,16 +56,16 @@ export default function CreateEntry() {
                       <Select.Item label="Blues" value="cross" />
                       <Select.Item label="Rock/Pop" value="ui" />
                   </Select>
-                  <FormControl.Label>Progress</FormControl.Label>
+                  <FormControl.Label>Progress (70)</FormControl.Label>
                   <Slider defaultValue={70} minValue={0} maxValue={100} accessibilityLabel="hello world" step={10}>
                       <Slider.Track>
                           <Slider.FilledTrack />
                       </Slider.Track>
                       <Slider.Thumb />
                   </Slider>
-                  <FormControl.Label>Youtube</FormControl.Label>
+                  <FormControl.Label isRequired={false}>Youtube</FormControl.Label>
                   <Input defaultValue={"https://youtube.de/"}/>
-                  <FormControl.Label>Ultimate Guitar</FormControl.Label>
+                  <FormControl.Label isRequired={false}>Ultimate Guitar</FormControl.Label>
                   <Input/>
                   <Button marginTop={5} onPress={() => onSubmit} >Submit</Button>
               </Stack>

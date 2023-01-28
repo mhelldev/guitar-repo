@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import CreateEntry from "./CreateEntry";
+import CreateEntry from "./views/CreateEntry";
 import { NativeBaseProvider} from "native-base";
 
 export default function App() {
