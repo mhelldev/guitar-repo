@@ -28,6 +28,8 @@ export default function List(props: ViewProperties) {
 
     const [songs, setSongs] = useState<SongEntry[]>()
 
+    const [style, setStyle] = useState<Style>()
+
     const readData = async () => {
         try {
             const guitarRepoJsonString = await AsyncStorage.getItem('@guitar-repo')
@@ -57,13 +59,16 @@ export default function List(props: ViewProperties) {
                   <Menu.Item onPress={() => {props.routeHandler('Create')}}>Create Song</Menu.Item>
               </Menu>
           </Box>
-          <Container alignItems="center" marginBottom={4}>
-              <Flex direction="row"><Badge marginRight={2}>Jazz</Badge><Badge marginRight={2}>Fingerpicking</Badge></Flex>
+          <Container alignItems="center" >
+              <Flex direction="row"><Badge marginRight={2} backgroundColor={style === 'Jazz' ? 'emerald.500' : 'gray.100'} onTouchStart={() => style === 'Jazz' ? setStyle(undefined) : setStyle('Jazz')}>Jazz</Badge><Badge marginRight={2} backgroundColor={style === 'Fingerpicking' ? 'emerald.500' : 'gray.100'} onTouchStart={() => style === 'Fingerpicking' ? setStyle(undefined) : setStyle('Fingerpicking')}>Fingerpicking</Badge>
+                  <Badge marginRight={2} backgroundColor={style === 'Blues' ? 'emerald.500' : 'gray.100'} onTouchStart={() => style === 'Blues' ? setStyle(undefined) : setStyle('Blues')}>Blues</Badge><Badge marginRight={2} backgroundColor={style === 'Rock/Pop' ? 'emerald.500' : 'gray.100'} onTouchStart={() => style === 'Rock/Pop' ? setStyle(undefined) : setStyle('Rock/Pop')}>Rock/Pop</Badge></Flex>
           </Container>
+          <Divider marginBottom={4}/>
+
           <ScrollView w={'100%'}>
-              {songs?.map(song =>
+              {songs?.filter(song => song.style === style || style === undefined).map(song =>
                   <>
-                      <Container alignItems="left" marginLeft={4}>
+                      <Container alignItems="left" marginLeft={6}>
                           <Heading>
                               <Text color="emerald.500">{song.song}</Text>
                               <Text> {song.artist}</Text>
@@ -74,7 +79,7 @@ export default function List(props: ViewProperties) {
                           <Link fontWeight="medium">{song.youtube}</Link>
                           <Link fontWeight="medium">{song.ultimateGuitar}</Link>
                       </Container>
-                      <Divider my="2"/>
+                      <Divider ml={'4%'} width={'92%'} my="2"/>
                   </>
               )}
           </ScrollView>
