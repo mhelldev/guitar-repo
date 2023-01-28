@@ -14,6 +14,7 @@ import {
     Select,
     CheckIcon, Menu, HamburgerIcon, Pressable, Heading
 } from 'native-base';
+import {ViewProperties} from "../App";
 
 type FormData = {
   name: string;
@@ -21,7 +22,7 @@ type FormData = {
   password: string;
 };
 
-export default function CreateEntry() {
+export default function CreateEntry(props: ViewProperties) {
 
   const onSubmit = (data: FormData) => {
     //Alert.alert('data', JSON.stringify(data));
@@ -35,7 +36,7 @@ export default function CreateEntry() {
                       <HamburgerIcon />
                   </Pressable>;
               }}>
-                  <Menu.Item>List Songs</Menu.Item>
+                  <Menu.Item onPress={() => {props.routeHandler('List')}}>List Songs</Menu.Item>
                   <Menu.Item isDisabled>Create Song</Menu.Item>
               </Menu>
           </Box>
