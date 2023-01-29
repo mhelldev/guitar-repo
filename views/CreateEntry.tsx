@@ -57,30 +57,54 @@ export default function CreateEntry(props: ViewProperties) {
     }, [])
 
   const onSubmit = async () => {
-        if (song && artist && style && progress) {
-            const entry: SongEntry = {
-                id: uuidv4(),
-                song,
-                artist,
-                style,
-                progress,
-                youtube,
-                ultimateGuitar
-            }
+        if (!song || !artist || !style || !progress) {
+            return
+        }
+        if (id) {
             try {
                 const guitarRepoJsonString = await AsyncStorage.getItem('@guitar-repo')
-                let guitarRepo: SongEntry[] = []
-                if(guitarRepoJsonString) {
-                    guitarRepo = JSON.parse(guitarRepoJsonString)
+                if (guitarRepoJsonString) {
+                    const guitarRepo: SongEntry[] = JSON.parse(guitarRepoJsonString)
+                    const songEntry = guitarRepo.find(song => song.id === id)
+                    if (songEntry) {
+                        songEntry.song = song
+                        songEntry.artist = artist
+                        songEntry.style = style
+                        songEntry.progress = progress
+                        songEntry.youtube = youtube
+                        songEntry.ultimateGuitar = ultimateGuitar
+                    }
+                    await AsyncStorage.setItem('@guitar-repo', JSON.stringify(guitarRepo))
                 }
-                guitarRepo.push(entry)
+            } catch(e) {
+                console.log('error updating file')
+            }
+        } else {
+                const entry: SongEntry = {
+                    id: '',
+                    song,
+                    artist,
+                    style,
+                    progress,
+                    youtube,
+                    ultimateGuitar
+                }
+                try {
+                    const guitarRepoJsonString = await AsyncStorage.getItem('@guitar-repo')
+                    let guitarRepo: SongEntry[] = []
+                    if (guitarRepoJsonString) {
+                        entry.id = guitarRepo.length+''
+                        guitarRepo = JSON.parse(guitarRepoJsonString)
+                    }
+                    guitarRepo.push(entry)
 
-                await AsyncStorage.setItem('@guitar-repo', JSON.stringify(guitarRepo))
-            } catch (e) {
-                console.log('error saving file')
+                    await AsyncStorage.setItem('@guitar-repo', JSON.stringify(guitarRepo))
+                } catch (e) {
+                    console.log('error saving file')
+                }
             }
         }
-  };
+
 
   return (
       <Box alignItems="center" marginTop={5}>
