@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Container,
     Alert,
@@ -32,7 +32,7 @@ export interface SongEntry {
 
 
 export default function CreateEntry(props: ViewProperties) {
-    const [id, setId] = useState<number | undefined>()
+    const [id, setId] = useState<string | undefined>()
     const [song, setSong] = useState<string | undefined>()
     const [artist, setArtist] = useState<string | undefined>(undefined)
     const [style, setStyle] = useState<Style | undefined>(undefined)
@@ -43,6 +43,18 @@ export default function CreateEntry(props: ViewProperties) {
     const isSaveEnabled = () => {
         return song && artist && style && progress
     }
+
+    useEffect(() => {
+        if (props.entry) {
+            setId(props.entry.id)
+            setSong(props.entry.song)
+            setArtist(props.entry.artist)
+            setStyle(props.entry.style)
+            setProgress(props.entry.progress)
+            setYoutube(props.entry.youtube)
+            setUltimateGuitar(props.entry.ultimateGuitar)
+        }
+    }, [])
 
   const onSubmit = async () => {
         if (song && artist && style && progress) {
@@ -78,7 +90,7 @@ export default function CreateEntry(props: ViewProperties) {
                       <HamburgerIcon />
                   </Pressable>;
               }}>
-                  <Menu.Item onPress={() => {props.routeHandler('List')}}>List Songs</Menu.Item>
+                  <Menu.Item onPress={() => {props.appStateHandler({route: 'List'})}}>List Songs</Menu.Item>
                   <Menu.Item isDisabled>Create Song</Menu.Item>
               </Menu>
           </Box>

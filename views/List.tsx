@@ -40,7 +40,6 @@ type FormData = {
 export default function List(props: ViewProperties) {
 
     const [songs, setSongs] = useState<SongEntry[]>()
-
     const [style, setStyle] = useState<Style>()
 
     const readData = async () => {
@@ -69,7 +68,7 @@ export default function List(props: ViewProperties) {
                   </Pressable>;
               }}>
                   <Menu.Item isDisabled>List Songs</Menu.Item>
-                  <Menu.Item onPress={() => {props.routeHandler('Create')}}>Create Song</Menu.Item>
+                  <Menu.Item onPress={() => {props.appStateHandler({route: 'Create'})}}>Create Song</Menu.Item>
               </Menu>
           </Box>
           <Container alignItems="center" >
@@ -95,7 +94,10 @@ export default function List(props: ViewProperties) {
                           </Container>
                           <Flex direction={'column'}>
                               <IconButton icon={<Icon as={AntDesign} name="delete" />} borderRadius="full" />
-                              <IconButton icon={<Icon as={AntDesign} name="edit" />} borderRadius="full" />
+                              <IconButton icon={<Icon as={AntDesign} name="edit" />} borderRadius="full" onPress={() => {
+
+                                  props.appStateHandler({route: 'Create', entry: song})
+                              }}/>
                           </Flex>
                       </Flex>
                       <Divider ml={'4%'} width={'92%'} my="2"/>

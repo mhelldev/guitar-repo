@@ -1,21 +1,28 @@
 import { StyleSheet } from 'react-native';
-import CreateEntry from "./views/CreateEntry";
+import CreateEntry, {SongEntry} from "./views/CreateEntry";
 import { NativeBaseProvider} from "native-base";
 import {useState} from "react";
 import List from "./views/List";
 
 export type Route = 'List' | 'Create'
 export interface ViewProperties {
-    routeHandler: Function
+    appStateHandler: Function
+    entry?: SongEntry
+}
+
+interface AppState {
+  route: Route
+  entry?: SongEntry
 }
 
 export default function App() {
 
-  const [route, setRoute] = useState<Route>('List')
+  const [appState, setAppState] = useState<AppState | undefined>()
+
 
   return (
       <NativeBaseProvider>
-          {route === 'List' ? <List routeHandler={setRoute}/> : <CreateEntry routeHandler={setRoute}/>}
+          {appState?.route === 'List' ? <List appStateHandler={setAppState}/> : <CreateEntry entry={appState?.entry} appStateHandler={setAppState}/>}
       </NativeBaseProvider>
   );
 }
