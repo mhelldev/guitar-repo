@@ -12,11 +12,24 @@ import {
     Stack,
     Slider,
     Select,
-    CheckIcon, Menu, HamburgerIcon, Pressable, Heading, VStack, Center, Divider, Link, ScrollView, Badge, Flex
+    CheckIcon,
+    Menu,
+    HamburgerIcon,
+    Pressable,
+    Heading,
+    VStack,
+    Center,
+    Divider,
+    Link,
+    ScrollView,
+    Badge,
+    Flex,
+    IconButton, Icon
 } from 'native-base';
 import {ViewProperties} from "../App";
 import {SongEntry, Style} from "./CreateEntry";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {AntDesign} from "@expo/vector-icons";
 
 type FormData = {
   name: string;
@@ -68,17 +81,23 @@ export default function List(props: ViewProperties) {
           <ScrollView w={'100%'}>
               {songs?.filter(song => song.style === style || style === undefined).map(song =>
                   <>
-                      <Container alignItems="left" marginLeft={6}>
-                          <Heading>
-                              <Text color="emerald.500">{song.song}</Text>
-                              <Text> {song.artist}</Text>
-                          </Heading>
-                          <Text mt="1" fontWeight="medium">
-                              <Text bold>{song.style}</Text> - {song.progress}%
-                          </Text>
-                          <Link fontWeight="medium">{song.youtube}</Link>
-                          <Link fontWeight="medium">{song.ultimateGuitar}</Link>
-                      </Container>
+                      <Flex direction={'row'}>
+                          <Container alignItems="left" marginLeft={6} w={'100%'}>
+                              <Heading>
+                                  <Text color="emerald.500">{song.song}</Text>
+                                  <Text> {song.artist}</Text>
+                              </Heading>
+                              <Text mt="1" fontWeight="medium">
+                                  <Text bold>{song.style}</Text> - {song.progress}%
+                              </Text>
+                              <Link fontWeight="medium">{song.youtube}</Link>
+                              <Link fontWeight="medium">{song.ultimateGuitar}</Link>
+                          </Container>
+                          <Flex direction={'column'}>
+                              <IconButton icon={<Icon as={AntDesign} name="delete" />} borderRadius="full" />
+                              <IconButton icon={<Icon as={AntDesign} name="edit" />} borderRadius="full" />
+                          </Flex>
+                      </Flex>
                       <Divider ml={'4%'} width={'92%'} my="2"/>
                   </>
               )}
