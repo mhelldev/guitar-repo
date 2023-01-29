@@ -9,6 +9,9 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
+    "@react-native-async-storage/async-storage": "~1.17.3",
+    "@types/uuid": "^9.0.0",
     "expo": "~47.0.12",
     "expo-status-bar": "~1.4.2",
     "native-base": "^3.4.25",
@@ -16,8 +19,7 @@
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-web": "~0.18.9",
-    "@react-native-async-storage/async-storage": "~1.17.3",
-    "@expo/vector-icons": "^13.0.0"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

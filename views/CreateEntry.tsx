@@ -16,10 +16,12 @@ import {
 } from 'native-base';
 import {ViewProperties} from "../App";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { v4 as uuidv4 } from 'uuid';
 
 export type Style = 'Jazz' | 'Fingerpicking' | 'Blues' | 'Rock/Pop'
 
 export interface SongEntry {
+    id: string
     song: string
     artist: string
     style: Style
@@ -30,6 +32,7 @@ export interface SongEntry {
 
 
 export default function CreateEntry(props: ViewProperties) {
+    const [id, setId] = useState<number | undefined>()
     const [song, setSong] = useState<string | undefined>()
     const [artist, setArtist] = useState<string | undefined>(undefined)
     const [style, setStyle] = useState<Style | undefined>(undefined)
@@ -44,6 +47,7 @@ export default function CreateEntry(props: ViewProperties) {
   const onSubmit = async () => {
         if (song && artist && style && progress) {
             const entry: SongEntry = {
+                id: uuidv4(),
                 song,
                 artist,
                 style,
