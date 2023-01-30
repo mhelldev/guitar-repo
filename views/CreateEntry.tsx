@@ -146,7 +146,7 @@ export default function CreateEntry(props: ViewProperties) {
                   <FormControl.Label isRequired={false}>Youtube</FormControl.Label>
                   <Input value={youtube} onChangeText={val => setYoutube(val)}/>
                   <FormControl.Label isRequired={false}>Ultimate Guitar</FormControl.Label>
-                  <Input value={ultimateGuitar} onChangeText={val => setUltimateGuitar(val)}/>
+                  <Input maxLength={1000} value={ultimateGuitar} onChangeText={val => setUltimateGuitar(val)}/>
                   <Button isDisabled={!isSaveEnabled()}  marginTop={5} onPress={() => onSubmit()} >Submit</Button>
               </Stack>
           </FormControl>
