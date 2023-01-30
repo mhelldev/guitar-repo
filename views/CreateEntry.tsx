@@ -46,6 +46,7 @@ export default function CreateEntry(props: ViewProperties) {
 
     useEffect(() => {
         if (props.entry) {
+            console.log(props.entry)
             setId(props.entry.id)
             setSong(props.entry.song)
             setArtist(props.entry.artist)
@@ -81,7 +82,7 @@ export default function CreateEntry(props: ViewProperties) {
             }
         } else {
                 const entry: SongEntry = {
-                    id: '',
+                    id: '1',
                     song,
                     artist,
                     style,

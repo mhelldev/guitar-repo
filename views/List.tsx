@@ -89,7 +89,7 @@ export default function List(props: ViewProperties) {
                               <Text mt="1" fontWeight="medium">
                                   <Text bold>{song.style}</Text> - {song.progress}%
                               </Text>
-                              <Link fontWeight="medium">{song.youtube}</Link>
+                              <Link fontWeight="medium" href={song.youtube}>{song.youtube}</Link>
                               <Link fontWeight="medium">{song.ultimateGuitar}</Link>
                           </Container>
                           <Flex direction={'column'}>
