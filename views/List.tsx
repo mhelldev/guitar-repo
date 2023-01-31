@@ -48,6 +48,7 @@ export default function List(props: ViewProperties) {
             let guitarRepo: SongEntry[] = []
             if (guitarRepoJsonString) {
                 guitarRepo = JSON.parse(guitarRepoJsonString)
+                console.log(JSON.stringify(guitarRepo))
             }
             setSongs(guitarRepo)
         } catch (e) {
