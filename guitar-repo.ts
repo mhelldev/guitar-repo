@@ -1,4 +1,6 @@
-[
+import {SongEntry} from "./views/CreateEntry";
+
+export const initGuitarRepo: SongEntry[] = [
   {
     "id": "1",
     "song": "Where or when",

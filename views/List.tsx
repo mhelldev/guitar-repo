@@ -30,6 +30,7 @@ import {ViewProperties} from "../App";
 import {SongEntry, Style} from "./CreateEntry";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AntDesign} from "@expo/vector-icons";
+import {initGuitarRepo} from "../guitar-repo";
 
 type FormData = {
   name: string;
@@ -48,6 +49,9 @@ export default function List(props: ViewProperties) {
             let guitarRepo: SongEntry[] = []
             if (guitarRepoJsonString) {
                 guitarRepo = JSON.parse(guitarRepoJsonString)
+                if (guitarRepo.length < initGuitarRepo.length) {
+                    guitarRepo = initGuitarRepo
+                }
                 console.log(JSON.stringify(guitarRepo))
             }
             setSongs(guitarRepo)
@@ -94,9 +98,15 @@ export default function List(props: ViewProperties) {
                               <Link fontWeight="medium">{song.ultimateGuitar}</Link>
                           </Container>
                           <Flex direction={'column'}>
-                              <IconButton icon={<Icon as={AntDesign} color={'gray.700'} name="delete" />} borderRadius="full" />
+                              <IconButton icon={<Icon as={AntDesign} color={'gray.700'} name="delete" />} borderRadius="full" onPress={async () => {
+                                  const deleteIndex = songs?.findIndex(value => value.id === song.id)
+                                  if (deleteIndex) {
+                                      const newSongs = songs?.splice(deleteIndex, 1)
+                                      setSongs(newSongs)
+                                      await AsyncStorage.setItem('@guitar-repo', JSON.stringify(newSongs))
+                                  }
+                              }}/>
                               <IconButton icon={<Icon as={AntDesign} color={'gray.700'} name="edit" />} borderRadius="full" onPress={() => {
-
                                   props.appStateHandler({route: 'Create', entry: song})
                               }}/>
                           </Flex>
